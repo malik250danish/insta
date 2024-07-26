@@ -50,7 +50,7 @@ const port = 3000;
 
 const clientId = "450809677823711";
 const clientSecret = "e16188c16767af59fc47614c79853133";
-const redirectUri = "http://localhost:3000/auth";
+const redirectUri = "https://insta-swart.vercel.app/";
 
 app.use(express.static("public"));
 
