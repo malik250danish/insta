@@ -1,23 +1,80 @@
-<!-- public/index.html -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Instagram OAuth Example</title>
+    <style>
+      .media-container {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .media-item {
+        margin: 10px;
+        border: 1px solid #ddd;
+        padding: 10px;
+        width: 300px;
+      }
+      .media-item img,
+      .media-item video {
+        max-width: 100%;
+      }
+    </style>
   </head>
   <body>
     <h1>Instagram OAuth Example</h1>
     <a id="authorize-link" href="#">Authorize Instagram</a>
+    <div class="media-container" id="media-container"></div>
 
     <script>
-      const clientId = "450809677823711";
-      const redirectUri = "https://insta-swart.vercel.app/";
+      const clientId = "YOUR_CLIENT_ID";
+      const redirectUri = "http://localhost:3000/auth"; // Local redirect URI
 
       document.getElementById(
         "authorize-link"
       ).href = `https://api.instagram.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user_profile,user_media&response_type=code`;
-      console.log("sdsadas");
+
+      async function fetchUserMedia() {
+        const response = await fetch("/media");
+        const userMedia = await response.json();
+
+        const mediaContainer = document.getElementById("media-container");
+        mediaContainer.innerHTML = "";
+
+        userMedia.forEach((media) => {
+          const mediaItem = document.createElement("div");
+          mediaItem.className = "media-item";
+
+          if (
+            media.media_type === "IMAGE" ||
+            media.media_type === "CAROUSEL_ALBUM"
+          ) {
+            const img = document.createElement("img");
+            img.src = media.media_url;
+            img.alt = media.caption || "";
+            mediaItem.appendChild(img);
+          } else if (media.media_type === "VIDEO") {
+            const video = document.createElement("video");
+            video.src = media.media_url;
+            video.controls = true;
+            mediaItem.appendChild(video);
+          }
+
+          const caption = document.createElement("p");
+          caption.textContent = media.caption || "";
+          mediaItem.appendChild(caption);
+
+          const link = document.createElement("a");
+          link.href = media.permalink;
+          link.target = "_blank";
+          link.textContent = "View on Instagram";
+          mediaItem.appendChild(link);
+
+          mediaContainer.appendChild(mediaItem);
+        });
+      }
+
+      fetchUserMedia();
     </script>
   </body>
 </html>
