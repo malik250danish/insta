@@ -1,0 +1,22 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Instagram OAuth Example</title>
+  </head>
+  <body>
+    <h1>Instagram OAuth Example</h1>
+    <a id="authorize-link" href="#">Authorize Instagram</a>
+
+    <script>
+      const clientId = "450809677823711";
+      const redirectUri = "http://localhost:3000/auth";
+
+      document.getElementById(
+        "authorize-link"
+      ).href = `https://api.instagram.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user_profile,user_media&response_type=code`;
+    </script>
+  </body>
+</html>
