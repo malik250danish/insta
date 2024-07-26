@@ -90,7 +90,7 @@ app.get("/auth", async (req, res) => {
     );
 
     const userMedia = mediaResponse.data.data;
-
+    console.log(userMedia);
     // Send user media to frontend
     res.send(`
       <h1>User Media</h1>
